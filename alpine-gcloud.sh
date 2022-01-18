@@ -12,6 +12,7 @@ mv kubectl /usr/bin
 /opt/google-cloud-sdk/bin/gcloud auth activate-service-account \
                                  --project=$PROJECT_ID --key-file=/etc/gcloud/key.json
 /opt/google-cloud-sdk/bin/gcloud container clusters get-credentials $CLUSTER_NAME \
+                                 --internal-ip \
                                  --zone $GCLOUD_ZONE --project $PROJECT_ID
 
 #ALL_DEPLOY=$(kubectl get -A -l "$SCHEDULER_LABEL" deploy -o=jsonpath='{.items[*].metadata.namespace}:{.items[*].metadata.name}')
