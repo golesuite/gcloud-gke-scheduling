@@ -1,5 +1,9 @@
 #!/bin/sh
 
+if [ -z ${SCHEDULER_POOL+x} ]; then
+    echo "SCHEDULER_POOL Env variable is unset"
+    exit 1
+fi
 
 if [ -z ${SCHEDULER_LABEL+x} ]; then
     echo "SCHEDULER_LABEL Env variable is unset"
