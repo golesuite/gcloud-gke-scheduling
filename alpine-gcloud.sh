@@ -46,5 +46,5 @@ for ((i=1; i<${#ALL_DEPLOY}+1; i++)); do
 done
 
 /opt/google-cloud-sdk/bin/gcloud container clusters resize -q $CLUSTER_NAME \
-                                 --node-pool pool-qa --num-nodes $SCALE_NODES_NUMBER \
+                                 --node-pool $SCHEDULER_POOL --num-nodes $SCALE_NODES_NUMBER \
                                  --zone $GCLOUD_ZONE --project $PROJECT_ID
