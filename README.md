@@ -10,7 +10,7 @@ Alpine script used to gcloud cluster resize
 |---|---|---|
 | SCALE_DEPLOY_NUMBER  | X | 0 |
 | SCALE_STS_NUMBER  | X | 0 |
-| SCALE_NODES_NUMER  | X | 0 |
+| SCALE_NODES_NUMBER  | X | 0 |
 | PROJECT_ID   | X | gole |
 | CLUSTER_NAME | X | br-gole-01 |
 | GCLOUD_ZONE  | X | southamerica-east1-a |

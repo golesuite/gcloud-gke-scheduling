@@ -1,5 +1,37 @@
 #!/bin/sh
 
+set -x
+
+if [ -z ${GCLOUD_ZONE+x} ]; then
+    echo "GCLOUD_ZONE Env variable is unset"
+    exit 1
+fi
+
+if [ -z ${CLUSTER_NAME+x} ]; then
+    echo "CLUSTER_NAME Env variable is unset"
+    exit 1
+fi
+
+if [ -z ${PROJECT_ID+x} ]; then
+    echo "PROJECT_ID Env variable is unset"
+    exit 1
+fi
+
+if [ -z ${SCALE_NODES_NUMBER+x} ]; then
+    echo "SCALE_NODES_NUMBER Env variable is unset"
+    exit 1
+fi
+
+if [ -z ${SCALE_STS_NUMBER+x} ]; then
+    echo "SCALE_STS_NUMBER Env variable is unset"
+    exit 1
+fi
+
+if [ -z ${SCALE_DEPLOY_NUMBER+x} ]; then
+    echo "SCALE_DEPLOY_NUMBER Env variable is unset"
+    exit 1
+fi
+
 if [ -z ${SCHEDULER_POOL+x} ]; then
     echo "SCHEDULER_POOL Env variable is unset"
     exit 1
