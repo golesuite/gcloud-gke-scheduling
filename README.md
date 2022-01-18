@@ -7,7 +7,7 @@ Alpine script used to gcloud cluster resize
 # ENV Variables
 
 | ENV Variables | Required | example value |
-|---|---|
+|---|---|---|
 | SCALE_DEPLOY_NUMBER  | X | 0 |
 | SCALE_STS_NUMBER  | X | 0 |
 | SCALE_NODES_NUMER  | X | 0 |
