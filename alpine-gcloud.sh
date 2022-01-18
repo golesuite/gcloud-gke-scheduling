@@ -60,22 +60,19 @@ mv kubectl /usr/bin
                                  --internal-ip \
                                  --zone $GCLOUD_ZONE --project $PROJECT_ID
 
-#ALL_DEPLOY=$(kubectl get -A -l "$SCHEDULER_LABEL" deploy -o=jsonpath='{.items[*].metadata.namespace}:{.items[*].metadata.name}')
-#NS=($(echo "$ALL_DEPLOY" | cut -d":" -f 1))
-#DEPLOY=($(echo "$ALL_DEPLOY" | cut -d":" -f 2))
-
 ALL_DEPLOY=$(kubectl get -A -l "$SCHEDULER_LABEL" deploy -o=jsonpath='{.items[*].metadata.namespace}' | sort | uniq )
+if test "${#ALL_DEPLOY}" -qt 0; then
+    for ((i=1; i<${#ALL_DEPLOY}+1; i++)); do
+        kubectl -n "${NS[$i]}" scale deploy -l $SCHEDULER_LABEL --replicas=${SCALE_DEPLOY_NUMBER}
+    done
+fi
 
-# SCALE_DEPLOY_NUMBER
-# SCALE_STS_NUMBER
-# SCALE_NODES_NUMER
-# CLUSTER_NAME
-# GCLOUD_ZONE
-
-for ((i=1; i<${#ALL_DEPLOY}+1; i++)); do
-    kubectl -n "${NS[$i]}" scale deploy -l $SCHEDULER_LABEL --replicas=${SCALE_DEPLOY_NUMBER}
-    kubectl -n "${NS[$i]}" scale sts -l $SCHEDULER_LABEL --replicas=${SCALE_STS_NUMBER}
-done
+ALL_STS=$(kubectl get -A -l "$SCHEDULER_LABEL" sts -o=jsonpath='{.items[*].metadata.namespace}' | sort | uniq )
+if test "${#ALL_STS}" -qt 0; then
+    for ((i=1; i<${#ALL_STS}+1; i++)); do
+        kubectl -n "${NS[$i]}" scale sts -l $SCHEDULER_LABEL --replicas=${SCALE_STS_NUMBER}
+    done
+fi
 
 /opt/google-cloud-sdk/bin/gcloud container clusters resize -q $CLUSTER_NAME \
                                  --node-pool $SCHEDULER_POOL --num-nodes $SCALE_NODES_NUMBER \
