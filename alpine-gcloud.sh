@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 set -x
 
@@ -61,26 +61,23 @@ mv kubectl /usr/bin
                                  --zone $GCLOUD_ZONE --project $PROJECT_ID
 
 ALL_DEPLOY=$(kubectl get -A -l "$SCHEDULER_LABEL" deploy -o=jsonpath='{.items[*].metadata.namespace}' | sort | uniq )
+
 echo $?
 echo $ALL_DEPLOY
 echo ${#ALL_DEPLOY}
 echo debug
 if test "${#ALL_DEPLOY}" -gt 0; then
     NS=($(echo "$ALL_DEPLOY" | cut -d":" -f 1))
-    i=1
-    while ["$i" -le "${#ALL_DEPLOY}"]; do
+    for ((i=1; i<${#ALL_DEPLOY}+1; i++)); do
         kubectl -n "${NS[$i]}" scale deploy -l $SCHEDULER_LABEL --replicas=${SCALE_DEPLOY_NUMBER}
-        i=$((i + 1))
     done
 fi
 
 ALL_STS=$(kubectl get -A -l "$SCHEDULER_LABEL" sts -o=jsonpath='{.items[*].metadata.namespace}' | sort | uniq )
 if test "${#ALL_STS}" -gt 0; then
     NS=($(echo "$ALL_STS" | cut -d":" -f 1))
-    i=1
-    while ["$i" -le "${#ALL_STS}"]; do
+    for ((i=1; i<${#ALL_STS}+1; i++)); do
         kubectl -n "${NS[$i]}" scale sts -l $SCHEDULER_LABEL --replicas=${SCALE_STS_NUMBER}
-        i=$((i + 1))
     done
 fi
 
