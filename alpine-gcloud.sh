@@ -1,5 +1,14 @@
 #!/bin/sh
 
+
+if [ -z ${SCHEDULER_LABEL+x} ]; then
+    echo "SCHEDULER_LABEL Env variable is unset"
+    exit 1
+elif ! [[ "$SCHEDULER_LABEL" =~ "=" ]]; then
+    echo "$SCHEDULER_LABEL Env variable don't contains key=value structure "
+    exit 1
+fi
+
 apk add --no-cache curl python3
 curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-368.0.0-linux-x86_64.tar.gz
 tar xzf google-cloud-sdk-368.0.0-linux-x86_64.tar.gz
@@ -26,9 +35,10 @@ ALL_DEPLOY=$(kubectl get -A -l "$SCHEDULER_LABEL" deploy -o=jsonpath='{.items[*]
 # SCALE_NODES_NUMER
 # CLUSTER_NAME
 # GCLOUD_ZONE
-for ((i=1; i<${#ALL_DEPLOY}+1; i++)); do 
-    kubectl -n "${NS[$i]}" scale deploy -l scheduler=comercial --replicas=${SCALE_DEPLOY_NUMBER}
-    kubectl -n "${NS[$i]}" scale sts -l scheduler=comercial --replicas=${SCALE_STS_NUMBER}
+
+for ((i=1; i<${#ALL_DEPLOY}+1; i++)); do
+    kubectl -n "${NS[$i]}" scale deploy -l $SCHEDULER_LABEL --replicas=${SCALE_DEPLOY_NUMBER}
+    kubectl -n "${NS[$i]}" scale sts -l $SCHEDULER_LABEL --replicas=${SCALE_STS_NUMBER}
 done
 
 /opt/google-cloud-sdk/bin/gcloud container clusters resize -q $CLUSTER_NAME \
