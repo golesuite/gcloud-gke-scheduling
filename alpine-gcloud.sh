@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -x
-
 if [ -z ${GCLOUD_ZONE+x} ]; then
     echo "GCLOUD_ZONE Env variable is unset"
     exit 1
@@ -61,11 +59,6 @@ mv kubectl /usr/bin
                                  --zone $GCLOUD_ZONE --project $PROJECT_ID
 
 ALL_DEPLOY=$(kubectl get -A -l "$SCHEDULER_LABEL" deploy -o=jsonpath='{.items[*].metadata.namespace}' | sort | uniq )
-
-echo $?
-echo $ALL_DEPLOY
-echo ${#ALL_DEPLOY}
-echo debug
 if test "${#ALL_DEPLOY}" -gt 0; then
     NS=($(echo "$ALL_DEPLOY" | cut -d":" -f 1))
     for ((i=1; i<${#ALL_DEPLOY}+1; i++)); do
