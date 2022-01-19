@@ -60,12 +60,10 @@ mv kubectl /usr/bin
 
 set -x
 
-ALL_DEPLOY=$(kubectl get -A -l "$SCHEDULER_LABEL" deploy -o=jsonpath='{.items[*].metadata.namespace}' | tr " " "\n" | sort | uniq )
-
-echo "$ALL_DEPLOY"
+ALL_DEPLOY=($(kubectl get -A -l "$SCHEDULER_LABEL" deploy -o=jsonpath='{.items[*].metadata.namespace}' | tr " " "\n" | sort | uniq ))
 
 if test "${#ALL_DEPLOY}" -gt 0; then
-    NS=($(echo "$ALL_DEPLOY" | sort | uniq | cut -d":" -f 1))
+    NS=($(echo "${ALL_DEPLOY[*]}" | sort | uniq | cut -d":" -f 1))
     echo $NS
     for ((i=0; i<${#NS}+1; i++)); do
         echo $i valor de i
