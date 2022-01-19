@@ -64,11 +64,11 @@ ALL_DEPLOY=($(kubectl get -A -l "$SCHEDULER_LABEL" deploy -o=jsonpath='{.items[*
 
 if test "${#ALL_DEPLOY}" -gt 0; then
     NS=($(echo "${ALL_DEPLOY[*]}" | sort | uniq | cut -d":" -f 1))
-    echo $NS
-    for ((i=0; i<${#NS}+1; i++)); do
+    echo "$NS"
+    for ((i=0; i<"${#NS}"+1; i++)); do
         echo $i valor de i
         echo ${NS[0]} 0
-        echo ${NS[*]} full
+        echo "${NS[*]}" full
         echo kubectl -n "${NS[$i]}" scale deploy -l $SCHEDULER_LABEL --replicas=${SCALE_DEPLOY_NUMBER}
     done
 fi
