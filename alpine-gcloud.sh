@@ -58,6 +58,8 @@ mv kubectl /usr/bin
                                  --internal-ip \
                                  --zone $GCLOUD_ZONE --project $PROJECT_ID
 
+set -x
+
 ALL_DEPLOY=$(kubectl get -A -l "$SCHEDULER_LABEL" deploy -o=jsonpath='{.items[*].metadata.namespace}' | tr " " "\n" | sort | uniq )
 
 if test "${#ALL_DEPLOY}" -gt 0; then
