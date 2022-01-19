@@ -64,17 +64,16 @@ ALL_DEPLOY=($(kubectl get -A -l "$SCHEDULER_LABEL" deploy -o=jsonpath='{.items[*
 
 if test "${#ALL_DEPLOY}" -gt 0; then
     NS=($(echo "${ALL_DEPLOY[*]}" | sort | uniq | cut -d":" -f 1))
-    echo "${NS[*]" total
-    for ((i=0; i<"${#NS}"+1; i++)); do
-        kubectl -n "${NS[$i]}" scale deploy -l $SCHEDULER_LABEL --replicas=${SCALE_DEPLOY_NUMBER}
+    for i in "${NS[*]}"; do
+        kubectl -n "$i" scale deploy -l $SCHEDULER_LABEL --replicas=${SCALE_DEPLOY_NUMBER}
     done
 fi
 
-ALL_STS=$(kubectl get -A -l "$SCHEDULER_LABEL" sts -o=jsonpath='{.items[*].metadata.namespace}' | sort | uniq )
+ALL_STS=()$(kubectl get -A -l "$SCHEDULER_LABEL" sts -o=jsonpath='{.items[*].metadata.namespace}' | sort | uniq ))
 if test "${#ALL_STS}" -gt 0; then
-    NS=($(echo "$ALL_STS" | cut -d":" -f 1))
-    for ((i=0; i<${#NS}+1; i++)); do
-        kubectl -n "${NS[$i]}" scale sts -l $SCHEDULER_LABEL --replicas=${SCALE_STS_NUMBER}
+    NS=($(echo "${ALL_STS[*]}" | cut -d":" -f 1))
+    for i in "${NS[*]}"; do
+        kubectl -n $i scale sts -l $SCHEDULER_LABEL --replicas=${SCALE_STS_NUMBER}
     done
 fi
 
