@@ -66,7 +66,7 @@ if test "${#ALL_DEPLOY}" -gt 0; then
     NS=($(echo "$ALL_DEPLOY" | cut -d":" -f 1))
     echo $NS
     for ((i=1; i<${#NS}+1; i++)); do
-        kubectl -n "${NS[$i]}" scale deploy -l $SCHEDULER_LABEL --replicas=${SCALE_DEPLOY_NUMBER}
+        echo kubectl -n "${NS[$i]}" scale deploy -l $SCHEDULER_LABEL --replicas=${SCALE_DEPLOY_NUMBER}
     done
 fi
 
@@ -75,10 +75,10 @@ if test "${#ALL_STS}" -gt 0; then
     NS=($(echo "$ALL_STS" | cut -d":" -f 1))
     echo $NS
     for ((i=1; i<${#NS}+1; i++)); do
-        kubectl -n "${NS[$i]}" scale sts -l $SCHEDULER_LABEL --replicas=${SCALE_STS_NUMBER}
+        echo kubectl -n "${NS[$i]}" scale sts -l $SCHEDULER_LABEL --replicas=${SCALE_STS_NUMBER}
     done
 fi
 
-/opt/google-cloud-sdk/bin/gcloud container clusters resize -q $CLUSTER_NAME \
-                                 --node-pool $SCHEDULER_POOL --num-nodes $SCALE_NODES_NUMBER \
-                                 --zone $GCLOUD_ZONE --project $PROJECT_ID
+# /opt/google-cloud-sdk/bin/gcloud container clusters resize -q $CLUSTER_NAME \
+#                                  --node-pool $SCHEDULER_POOL --num-nodes $SCALE_NODES_NUMBER \
+#                                  --zone $GCLOUD_ZONE --project $PROJECT_ID
