@@ -69,7 +69,7 @@ if test "${#ALL_DEPLOY}" -gt 0; then
     done
 fi
 
-ALL_STS=()$(kubectl get -A -l "$SCHEDULER_LABEL" sts -o=jsonpath='{.items[*].metadata.namespace}' | sort | uniq ))
+ALL_STS=($(kubectl get -A -l "$SCHEDULER_LABEL" sts -o=jsonpath='{.items[*].metadata.namespace}' | sort | uniq ))
 if test "${#ALL_STS}" -gt 0; then
     NS=($(echo "${ALL_STS[*]}" | cut -d":" -f 1))
     for i in "${NS[*]}"; do
