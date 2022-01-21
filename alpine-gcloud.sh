@@ -64,7 +64,7 @@ resize_cluster(){
     /opt/google-cloud-sdk/bin/gcloud container clusters resize -q $CLUSTER_NAME \
                                      --node-pool $SCHEDULER_POOL --num-nodes $SCALE_NODES_NUMBER \
                                      --zone $GCLOUD_ZONE --project $PROJECT_ID
->}
+}
 
 resize_deploys(){
     ALL_DEPLOY=($(kubectl get -A -l "$SCHEDULER_LABEL" deploy -o=jsonpath='{.items[*].metadata.namespace}' | tr " " "\n" | sort | uniq ))
