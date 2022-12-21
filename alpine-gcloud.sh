@@ -52,6 +52,7 @@ mv google-cloud-sdk /opt
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 chmod +x kubectl
 mv kubectl /usr/bin
+ln -s /opt/google-cloud-sdk/bin/gcloud /usr/local/bin/
 
 # gcloud auth
 /opt/google-cloud-sdk/bin/gcloud auth activate-service-account \
@@ -94,7 +95,6 @@ if test "$SCALE_NODES_NUMBER" -eq "0"; then
     resize_cluster;
 else
     resize_cluster;
-    sleep 60;
     resize_deploys;
     resize_sts;
 fi

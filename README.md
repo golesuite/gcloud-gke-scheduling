@@ -16,3 +16,4 @@ Alpine script used to gcloud cluster resize
 | GCLOUD_ZONE  | X | southamerica-east1-a |
 | SCHEDULER_LABEL | X | scheduler=comercial |
 | SCHEDULER_POOL | X | pool-qa |
+| USE_GKE_GCLOUD_AUTH_PLUGIN | X | True |
