@@ -112,12 +112,12 @@ repo_clone(){
 
 delete_applications(){
     cd /tmp/$APPLICATIONS_PATH
-    find  . | grep app | grep $ENVIRONMENT| awk '{print "kubectl delete -f " $1 }' | sh
+    find  . | grep application.yaml | grep $ENVIRONMENT| awk '{print "kubectl delete -f " $1 }' | sh
 }
 
 create_applications(){
     cd /tmp/$APPLICATIONS_PATH
-    find  . | grep app | grep $ENVIRONMENT| awk '{print "kubectl apply -f " $1 }' | sh
+    find  . | grep application.yaml | grep $ENVIRONMENT| awk '{print "kubectl apply -f " $1 }' | sh
 }
 
 if test "$SCALE_MODE" -eq "0"; then
