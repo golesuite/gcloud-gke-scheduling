@@ -59,7 +59,7 @@ fi
 
 set -x
 
-apk add --no-cache curl python3
+apk add --no-cache curl python3 git
 curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-411.0.0-linux-x86_64.tar.gz
 tar xzf google-cloud-cli-411.0.0-linux-x86_64.tar.gz
 mv google-cloud-sdk /opt
