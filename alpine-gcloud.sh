@@ -43,20 +43,18 @@ elif ! [[ "$SCHEDULER_LABEL" =~ "=" ]]; then
     exit 1
 fi
 
-## Novas variaveis                                                                                                                                                                                                                          
-if [ -z ${APPLICATION_PATH+x} ]; then                                                                                                                                                                                                       
-    echo "APPLICATION_PATH Env variable is unset"                                                                                                                                                                                           
-    exit 1                                                                                                                                                                                                                                  
-fi                                                                                                                                                                                                                                          
-                                                                                                                                                                                                                                            
-if [ -z ${SCALE_MODE+x} ]; then                                                                                                                                                                                                             
-    echo "SCALE_MODE Env variable is unset"                                                                                                                                                                                                 
-    exit 1                                                                                                                                                                                                                                  
-fi                                                                                                                                                                                                                                          
-                                                                                                                                                                                                                                            
-if [ -z ${ENVIRONMENT+x} ]; then                                                                                                                                                                                                            
-    echo "ENVIRONMENT Env variable is unset"                                                                                                                                                                                                
-    exit 1                                                                                                                                                                                                                                  
+#
+if [ -z ${APPLICATION_PATH+x} ]; then
+    echo "APPLICATION_PATH Env variable is unset"
+    exit 1
+fi
+if [ -z ${SCALE_MODE+x} ]; then
+    echo "SCALE_MODE Env variable is unset"
+    exit 1
+fi
+if [ -z ${ENVIRONMENT+x} ]; then
+    echo "ENVIRONMENT Env variable is unset"
+    exit 1
 fi 
 
 set -x
@@ -111,12 +109,12 @@ repo_clone(){
 }
 
 delete_applications(){
-    cd /tmp/$APPLICATIONS_PATH
+    cd /tmp/$APPLICATION_PATH
     find  . | grep application.yaml | grep $ENVIRONMENT| awk '{print "kubectl delete -f " $1 }' | sh
 }
 
 create_applications(){
-    cd /tmp/$APPLICATIONS_PATH
+    cd /tmp/$APPLICATION_PATH
     find  . | grep application.yaml | grep $ENVIRONMENT| awk '{print "kubectl apply -f " $1 }' | sh
 }
 
