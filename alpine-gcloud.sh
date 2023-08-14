@@ -43,6 +43,22 @@ elif ! [[ "$SCHEDULER_LABEL" =~ "=" ]]; then
     exit 1
 fi
 
+## Novas variaveis                                                                                                                                                                                                                          
+if [ -z ${APPLICATION_PATH+x} ]; then                                                                                                                                                                                                       
+    echo "APPLICATION_PATH Env variable is unset"                                                                                                                                                                                           
+    exit 1                                                                                                                                                                                                                                  
+fi                                                                                                                                                                                                                                          
+                                                                                                                                                                                                                                            
+if [ -z ${SCALE_MODE+x} ]; then                                                                                                                                                                                                             
+    echo "SCALE_MODE Env variable is unset"                                                                                                                                                                                                 
+    exit 1                                                                                                                                                                                                                                  
+fi                                                                                                                                                                                                                                          
+                                                                                                                                                                                                                                            
+if [ -z ${ENVIRONMENT+x} ]; then                                                                                                                                                                                                            
+    echo "ENVIRONMENT Env variable is unset"                                                                                                                                                                                                
+    exit 1                                                                                                                                                                                                                                  
+fi 
+
 set -x
 
 apk add --no-cache curl python3
@@ -88,14 +104,42 @@ resize_sts(){
     fi
 }
 
-# first resize cluster then create pods
-if test "$SCALE_NODES_NUMBER" -eq "0"; then
-    resize_deploys;
-    resize_sts;
+repo_clone(){
+    cd /tmp
+    git clone $REPO_ADDRESS
+    git checkout $BRANCH
+}
+
+delete_applications(){
+    cd /tmp/$APPLICATIONS_PATH
+    find  . | grep app | grep $ENVIRONMENT| awk '{print "kubectl delete -f " $1 }' | sh
+}
+
+create_applications(){
+    cd /tmp/$APPLICATIONS_PATH
+    find  . | grep app | grep $ENVIRONMENT| awk '{print "kubectl apply -f " $1 }' | sh
+}
+
+if test "$SCALE_MODE" -eq "0"; then
+    repo_clone;
+    delete_applications;
     sleep 60;
     resize_cluster;
 else
     resize_cluster;
-    resize_deploys;
-    resize_sts;
+    sleep 60;
+    repo_clone;
+    create_applications;
 fi
+
+# first resize cluster then create pods
+#if test "$SCALE_NODES_NUMBER" -eq "0"; then
+#    resize_deploys;
+#    resize_sts;
+#    sleep 60;
+#    resize_cluster;
+#else
+#    resize_cluster;
+#    resize_deploys;
+#    resize_sts;
+#fi
