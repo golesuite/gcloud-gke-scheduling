@@ -105,17 +105,21 @@ resize_sts(){
 repo_clone(){
     cd /tmp
     git clone $REPO_ADDRESS
+    ls
+    echo "$REPO_ADDRESS cloned!"
 }
 
 delete_applications(){
-    cd /tmp/$APPLICATION_PATH
+    cd /tmp$APPLICATION_PATH
     git checkout $BRANCH
+    sleep 60
     find  . | grep application.yaml | grep $ENVIRONMENT| awk '{print "kubectl delete -f " $1 }' | sh
 }
 
 create_applications(){
-    cd /tmp/$APPLICATION_PATH
+    cd /tmp$APPLICATION_PATH
     git checkout $BRANCH
+    sleep 60
     find  . | grep application.yaml | grep $ENVIRONMENT| awk '{print "kubectl apply -f " $1 }' | sh
 }
 
