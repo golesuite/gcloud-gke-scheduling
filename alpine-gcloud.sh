@@ -111,13 +111,11 @@ repo_clone(){
 
 delete_applications(){
     cd /tmp$APPLICATION_PATH
-    sleep 60
     find  . | grep application.yaml | grep $ENVIRONMENT| awk '{print "kubectl delete -f " $1 }' | sh
 }
 
 create_applications(){
     cd /tmp$APPLICATION_PATH
-    sleep 60
     find  . | grep application.yaml | grep $ENVIRONMENT| awk '{print "kubectl apply -f " $1 }' | sh
 }
 
