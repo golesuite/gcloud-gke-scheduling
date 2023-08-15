@@ -104,7 +104,7 @@ resize_sts(){
 
 repo_clone(){
     cd /tmp
-    git clone $REPO_ADDRESS
+    git clone -b 'feature/applications' $REPO_ADDRESS
     ls
     echo "$REPO_ADDRESS cloned!"
 }
