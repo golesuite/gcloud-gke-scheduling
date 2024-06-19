@@ -60,7 +60,7 @@ fi
 set -x
 
 apk add --no-cache curl python3 git
-curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-411.0.0-linux-x86_64.tar.gz
+curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-481.0.0-linux-x86_64.tar.gz
 tar xzf google-cloud-cli-411.0.0-linux-x86_64.tar.gz
 mv google-cloud-sdk /opt
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
