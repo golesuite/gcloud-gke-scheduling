@@ -121,14 +121,27 @@ create_applications(){
    # find  . | grep application.yaml | grep $ENVIRONMENT| awk '{print "kubectl apply -f " $1 }' | sh
 }
 
+scale_extra_services(){
+    # external
+    kubectl -n external scale deploy postgres-qa --replicas=${SCALE_DEPLOY_NUMBER}
+    kubectl -n external scale deploy redis-qa --replicas=${SCALE_DEPLOY_NUMBER}
+    kubectl -n external scale deploy ingress-nginx-qa-controller --replicas=${SCALE_DEPLOY_NUMBER}
+
+    # elastic-qa
+    kubectl -n elastic-qa scale sts eck-mmp5-qa-es-eck-qa-data-nodes --replicas=${SCALE_STS_NUMBER}
+    kubectl -n elastic-qa scale sts eck-mmp5-qa-es-eck-qa-master-nodes --replicas=${SCALE_STS_NUMBER}
+}
+
 if test "$SCALE_MODE" -eq "0"; then
     repo_clone;
     delete_applications;
+    scale_extra_services;
     sleep 60;
     resize_cluster;
 else
     resize_cluster;
     sleep 60;
+    scale_extra_services;
     repo_clone;
     create_applications;
 fi
