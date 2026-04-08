@@ -125,7 +125,9 @@ scale_extra_services(){
     # external
     kubectl -n external scale deploy postgres-qa --replicas=${SCALE_DEPLOY_NUMBER}
     kubectl -n external scale deploy redis-qa --replicas=${SCALE_DEPLOY_NUMBER}
-    kubectl -n external scale deploy ingress-nginx-qa-controller --replicas=${SCALE_DEPLOY_NUMBER}
+
+    # ingress-nginx-qa
+    kubectl -n ingress-nginx-qa scale deploy ingress-nginx-qa-controller --replicas=${SCALE_DEPLOY_NUMBER}
 
     # elastic-qa
     kubectl -n elastic-qa scale sts eck-mmp5-qa-es-eck-qa-data-nodes --replicas=${SCALE_STS_NUMBER}
