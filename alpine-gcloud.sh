@@ -123,15 +123,15 @@ create_applications(){
 
 scale_extra_services(){
     # external
-    kubectl -n external scale deploy postgres-qa --replicas=${SCALE_DEPLOY_NUMBER}
-    kubectl -n external scale deploy redis-qa --replicas=${SCALE_DEPLOY_NUMBER}
+    kubectl -n external scale deploy postgres-$ENVIRONMENT --replicas=${SCALE_DEPLOY_NUMBER}
+    kubectl -n external scale deploy redis-$ENVIRONMENT --replicas=${SCALE_DEPLOY_NUMBER}
 
     # ingress-nginx-qa
-    kubectl -n ingress-nginx-qa scale deploy ingress-nginx-qa-controller --replicas=${SCALE_DEPLOY_NUMBER}
+    kubectl -n ingress-nginx-$ENVIRONMENT scale deploy ingress-nginx-$ENVIRONMENT-controller --replicas=${SCALE_DEPLOY_NUMBER}
 
     # elastic-qa
-    kubectl -n elastic-qa scale sts eck-mmp5-qa-es-eck-qa-data-nodes --replicas=${SCALE_STS_NUMBER}
-    kubectl -n elastic-qa scale sts eck-mmp5-qa-es-eck-qa-master-nodes --replicas=${SCALE_STS_NUMBER}
+    kubectl -n elastic-$ENVIRONMENT scale sts eck-mmp5-$ENVIRONMENT-es-eck-$ENVIRONMENT-data-nodes --replicas=${SCALE_STS_NUMBER}
+    kubectl -n elastic-$ENVIRONMENT scale sts eck-mmp5-$ENVIRONMENT-es-eck-$ENVIRONMENT-master-nodes --replicas=${SCALE_STS_NUMBER}
 }
 
 if test "$SCALE_MODE" -eq "0"; then
